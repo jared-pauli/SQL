@@ -1,0 +1,57 @@
+-- For this project I downloaded Spotify Data from Kaggle--
+-- Then I created a table to insert the data into --
+-- From there I used SQL to perform analytics --
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+- From here I inserted the Spotift Data .csv file into the above table - 
+
+- Then I wrote and answered the following questions to analyze the data - 
+
+
+- #1 Which artist released the most songs? How many songs did they release? - 
+SELECT artist_name, COUNT(track_name)
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY COUNT(track_name) desc
+LIMIT 1;
+
+- #2 What are the top 10 LEAST popular songs based on the popularity value? - 
+SELECT track_name, popularity
+FROM BIT_DB.Spotifydata
+ORDER BY popularity asc
+LIMIT 10;
+
+- #3 What songs do not have a 4 as their time signature? - 
+SELECT track_name, time_signature
+FROM BIT_DB.Spotifydata
+WHERE time_signature <> 4;
+
+- #4 What is each artist's average danceability value? - 
+SELECT AVG(danceability), artist_name
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name;
+
+- #5 If you combine danceability and tempo to create a "Party Value", what are the top 10 "Party" songs and who are they by? (Round answer to the nearest whole number) - 
+SELECT ROUND(danceability*tempo) as party_value, track_name, artist_name
+FROM BIT_DB.Spotifydata
+ORDER BY party_value desc;
